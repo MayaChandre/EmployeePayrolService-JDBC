@@ -8,9 +8,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class EmployeePayrollTest {
-
 	@Test
-    public void given3EmployeesWhenWrittenToFileShouldMatchEmployeeEnteries(){
+	public void given3EmployeesWhenWrittenToFileShouldMatchEmployeeEnteries(){
         EmployeePayrollData[] arrayOfEmps = {
                 new EmployeePayrollData(1, "Jeff Bezos", 100000.0),
                 new EmployeePayrollData(2, "Bill Gates", 200000.0),
@@ -60,6 +59,15 @@ public class EmployeePayrollTest {
                 .readAverageSalaryByGender(EmployeePayrollService.IOService.DB_IO);
         Assert.assertTrue(averageSalaryByGender.get("M").equals(2000000.00) &&
                 averageSalaryByGender.get("F").equals(3000000.00));
+    }
+
+    @Test
+    public void givenNewEmployee_WhenAdded_ShouldSyncWithDB() {
+        EmployeePayrollService employeePayrollService = new EmployeePayrollService();
+        employeePayrollService.readEmployeePayrollData(EmployeePayrollService.IOService.DB_IO);
+        employeePayrollService.addEmployeeTOPayroll("Mark","M", 5000000.00, LocalDate.now());
+        boolean result = employeePayrollService.checkEmployeePayrollInSyncWithDB("Mark");
+        Assert.assertTrue(result);
     }
 
 
