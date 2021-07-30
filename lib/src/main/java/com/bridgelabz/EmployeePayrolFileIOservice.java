@@ -9,51 +9,60 @@ import java.util.List;
 
 public class EmployeePayrolFileIOservice {
 
-	 public static String PAYROLL_FILE_NAME = "payroll-file.txt";
+	public static final String PAYROLL_FILE_NAME = "payroll-file.txt";
 
-	    public void writeData(List<EmployeePayrollData> employeePayrollList){
-	        StringBuffer empBuffer = new StringBuffer();
-	        employeePayrollList.forEach(employee -> {
-	            String employeeDataString = employee.toString().concat("\n");
-	            empBuffer.append(employeeDataString);
-	        });
+    public static void writeData(List<EmployeePayrollData> employeePayrollData) {
+        StringBuilder stringBuilder = new StringBuilder();
+        employeePayrollData.forEach(emp -> stringBuilder.append(emp.toString().concat("\n")));
 
-	        try{
-	            Files.write(Paths.get(PAYROLL_FILE_NAME), empBuffer.toString().getBytes());
-	        } catch (IOException e){
-	            e.printStackTrace();
-	        }
-	    }
+        try {
+            Files.write(Paths.get(PAYROLL_FILE_NAME), stringBuilder.toString().getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	    public void printData() {
-	        try {
-	            Files.lines(new File(PAYROLL_FILE_NAME).toPath())
-	                    .forEach(System.out::println);
-	        } catch (IOException e) {
+    public static void printData() {
+        try {
+            Files.lines(new File(PAYROLL_FILE_NAME).toPath()).forEach(System.out::println);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	        }
-	    }
+    public void printDataFromFile() {
+        try {
+            Files.lines(new File(PAYROLL_FILE_NAME).toPath()).forEach(System.out::println);
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+    }
 
-	    public long countEntries() {
-	        long entries = 0;
-	        try {
-	            entries = Files.lines(new File(PAYROLL_FILE_NAME).toPath())
-	                    .count();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	            return entries;
-	    }
+    public void readData(){
+        List<EmployeePayrollData> employeePayrollList = new ArrayList<>();
+        try {
+            Files.lines(new File(PAYROLL_FILE_NAME).toPath()).map(line -> line.trim())
+                    .forEach(line -> System.out.println(line));
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+    }
 
-	    public List<EmployeePayrollData> readData() {
-	        List<EmployeePayrollData> employeePayrollList = new ArrayList<>();
-	        try {
-	            Files.lines(new File(PAYROLL_FILE_NAME).toPath())
-	                    .map(line -> line.trim())
-	                    .forEach(line -> System.out.println(line));
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-	        return employeePayrollList;
-	    }
+    public static long countEntries() {
+        long entries = 0;
+        try {
+            entries = Files.lines(new File(PAYROLL_FILE_NAME).toPath()).count();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return entries;
+    }
+
+    public void readDataFromFile() {
+        try {
+            Files.lines(new File(PAYROLL_FILE_NAME).toPath()).map(line -> line.trim()).forEach(line -> System.out.println(line));
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+    }
 	}
